@@ -65,70 +65,135 @@ This file contains a number of front-end interview answers. Subjective questions
 #### CSS Questions:
 
 * What is the difference between classes and IDs in CSS?
+
 > Classes apply to a group of DOM elements while IDs refer to only one. Hence IDs have a higher specificity.
+
 * What's the difference between "resetting" and "normalizing" CSS? Which would you choose, and why?
+
 > Normalizing CSS only fixes abnormal behaviors among different browsers. Resetting CSS applies sensible defaults to elements in addition to normalizing it. I would choose to normalize, as this gives me more flexibility and reduces the amount of overriding I would have to do.
+
 * Describe Floats and how they work.
+
 > Floats differ from normal behavior and pushes the element into the direction specified.
+
 * Describe z-index and how stacking context is formed.
+
 > z-index is the index in which elements overlay on top of. In a stacking context, elements with a higher index is overlayed on top of elements with a lower one.
+
 * Describe BFC(Block Formatting Context) and how it works.
+
 > (no idea)
+
 * What are the various clearing techniques and which is appropriate for what context?
+
 > The only clearing technique I know is the `clear` property. It is used to arrange float elements such that they do not arrange themselves horizontally in the direction specified.
+
 * Explain CSS sprites, and how you would implement them on a page or site.
+
 > CSS sprites are a file in which image elements are combined together. We can use CSS then to split them into individual sprites for use as icons or graphics. This is to reduce page requests and load time.
+
 * What are your favourite image replacement techniques and which do you use when?
+
 > I have only used base-64 inline for images. This reduces the requests needed and avoids the image rendering after the user sees the DOM.
+
 * How would you approach fixing browser-specific styling issues?
+
 > I would use auto-prefixer to prevent cross browser styling issues. On top of that, I would check in actual browsers to ensure styling is working correctly.
+
 * How do you serve your pages for feature-constrained browsers?
+
 > If the feature is important, try to find work-arounds or polyfills for the feature. If not, have the feature degrade naturally and use a fall back. If all else fails, recommend the user to upgrade their browser.
+
 * What techniques/processes do you use?
+
 > (Not sure what the question is asking)
+
 * What are the different ways to visually hide content (and make it available only for screen readers)?
+
 > Different ways to hide content. `display: none`, `opacity: 0`, `background-clip: 100%` and `position: absolute` with `left: -99999px`. Only the last two work with screen readers.
+
 * Have you ever used a grid system, and if so, what do you prefer?
+
 > I have used the bootstrap grid system. I prefer hand-writing my own css as it enables me to learn more about CSS itself.
+
 * Have you used or implemented media queries or mobile specific layouts/CSS?
+
 > I used mobile-first web development with [modify.sg](https://www.modify.sg) and my codepens are also similarly focused on the mobile first aspect. Media queries are used.
+
 * Are you familiar with styling SVG?
+
 > I have styled SVG with simple CSS but have not tried animating them.
+
 * How do you optimize your webpages for print?
+
 > No idea.
+
 * What are some of the "gotchas" for writing efficient CSS?
+
 > Efficient CSS does not have too many specific class names and ids. Having high specificity is also not good since it takes longer to parse the CSS.
+
 * What are the advantages/disadvantages of using CSS preprocessors?
+
 > Advantages include being able to write cleaner, more modularized, more semantic CSS, all while increasing speed of development. Disadvantages include having to learn the preprocessor syntax. However the difficulty of learning them is not high.
+
 * Describe what you like and dislike about the CSS preprocessors you have used.
+
 > I have used SCSS. I enjoy it because it looks very similar to CSS, in addition to being able to write for/while loops that reduce repetition. Constants enable the team to change the structure more easily. I do not find disadvantages in SCSS.
+
 * How would you implement a web design comp that uses non-standard fonts?
+
 > Find a CDN to load the font file and have a fallback. There are other font importing techniques but I am not familiar.
+
 * Explain how a browser determines what elements match a CSS selector.
+
 > The browser essentially crawls the DOM tree and match elements with the right class/id/tag. The higher the specificity, the longer and hard the browser works to find the elements.
+
 * Describe pseudo-elements and discuss what they are used for.
+
 > Pseudo-elements are usually used to add styling that are not part of the DOM structure. They can also be used to add prefixes and subfixes to text, which can be used smartly for responsive reasons.
+
 * Explain your understanding of the box model and how you would tell the browser in CSS to render your layout in different box models.
+
 > Box model contains a `margin-box`, `border-box`, `padding-box` and position. For example, in the `padding=box` model, assigning a border would make the actual object larger than the size defined in `margin-box`. Similarly, if you account for `border-box`, then additional margin would make the box larger than you defined.
+
 * What does ```* { box-sizing: border-box; }``` do? What are its advantages?
+
 > Changes the box model to account for the border. This is more intuitive for people and makes writing and debugging CSS easier.
+
 * List as many values for the display property that you can remember.
+
 > `inline`, `inline-block`, `block`, `flex`, `inline-flex`, `table`, `table-row`, `table-cell`, `table-col`, `none`, `inline-table` and ...
+
 * What's the difference between inline and inline-block?
+
 > Inline does not have a width and height.
+
 * What's the difference between a relative, fixed, absolute and statically positioned element?
+
 > Relative is positioned relative to its parent element. Fixed is positioned to the browser screen. Absolue is positioned outside until it hits an element with the `relative` position. Static is the default attribute for all elements.
+
 * The 'C' in CSS stands for Cascading.  How is priority determined in assigning styles (a few examples)?  How can you use this system to your advantage?
+
 > Prority is determined by specificity. For example, elements with `!important` are always given the highest priority and will be styled that way. Specificity can also be used in unique ways to override sibling styles (Pure CSS implementations of dropdowns / carousels)
+
 * What existing CSS frameworks have you used locally, or in production? How would you change/improve them?
+
 > I have used Bootstrap. It is nice to use it for rapid prototypes, but would be quite hard to debug if you try to override attributes without understanding why they were put there in the first place.
+
 * Have you played around with the new CSS Flexbox or Grid specs?
+
 > Yes. Flexbox is very powerful but hard to get right. I hope Grid lands soon, I really need it!
+
 * How is responsive design different from adaptive design?
+
 > Responsive design allows for different screen sizes and different height and widths. Adaptive design cater to specific sizes only.
+
 * Have you ever worked with retina graphics? If so, when and what techniques did you use?
+
 > A nice header `<meta id="viewport" name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1">` will enable retina graphics to work as if each pixel is density-independent.
+
 * Is there any reason you'd want to use `translate()` instead of *absolute positioning*, or vice-versa? And why?
+
 > Translate is more efficient for animation as there will be less redraws, and thus trigger less jank for animations. Translate also allows you to move elements without moving the element out of its position. Hence places where this could be useful will be things like pure CSS dropdowns.
 
 #### JS Questions:
