@@ -57,7 +57,7 @@ remDup([H|T],R) :- sel(H,T), !, remDup(T,R).
 remDup([H|T],[H|R]) :- remDup(T,R).
 ```
 
-#### Finite Constraint
+### Finite Constraint
 Some basic constraints
 ```prolog
 X #> 3. % X in 4..sup
@@ -74,6 +74,9 @@ cfact(N,R) :- N#>0, M #= N-1,
 
 Finite constraint is powerful.
 
-##### Labeling for finite constraints
+#### Labeling for finite constraints
 [Label](http://www.swi-prolog.org/pldoc/man?predicate=labeling/2) is a library which can be used to provide some concrete answers which prolog doesn't give (only in ranges, etc).
 This [stackoverflow post](http://stackoverflow.com/questions/27216247/i-dont-understand-what-label-does-in-prolog) explains it indepth.
+
+### Atoms
+Singlequotes in Prolog are always atoms.
