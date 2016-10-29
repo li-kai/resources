@@ -11,15 +11,22 @@ ordered::(List[Int]) -> Bool
 sorted::(List[Int],List[Int]) -> Bool
 
 */
-
 permute([], []).
+permute([X|Xs], Ys) :-
+  permute(Xs, R1),
+  addin(X, Ys, R1).
 
-permute([X|Xs], [Y, Ys]):- permute(Xs, Ys).
-permute([X|Xs], Ys):- permute(Xs, R1), addin(X, R1, Ys).
-addin(X, R1, [X|R1]).
-addin(X, [Y|R1], [Y|R2]):- addin(X, R1, R2).
+addin(X, [X|Tail], Tail).
+addin(Elem, [Head|Tail], [Head|Rest]) :-
+  addin(Elem, Tail, Rest).
 
-sorted(Xs,Ys) :- false.
+ordered([]).
+ordered([_]).
+ordered([X,Y|Tail]):- X =< Y, ordered([Y|Tail]).
+
+sorted([], []).
+sorted([_], [_]).
+sorted(Xs,Ys) :- permute(Xs, Ys), ordered(Ys).
 
 /*
 (Q2)
@@ -37,13 +44,16 @@ white ::(Int) -> Bool
 dutch_flag::(xs:List[Int],rs:List[Int]) -> Bool
 
 */
-
 append([],Y,Y).
 append([X|Xs],Y,[X|Rs]):- append(Xs,Y,Rs).
 red(1).
 white(2).
 blue(3).
-dutch(Xs,Ys):- false.
+
+dutch([],[]).
+dutch(Xs, Ys):-
+  include(red, Xs, RedList), include(white, Xs, WhiteList), include(blue, Xs, BlueList),
+  append(RedList, WhiteList, RedAndWhiteList), append(RedAndWhiteList, BlueList, Ys).
 
 /*
   (Q3) Maze problem
@@ -63,19 +73,32 @@ dutch(Xs,Ys):- false.
     mazepath2 :: (Point,PointList[Point]) -> Bool
 
 */
-
 entry(a).
 exit(e).
 exit(f).
 next(a,b).
 next(b,c).
-/* next(b,a). */
+next(b,a).
 next(b,d).
 next(c,e).
 next(d,f).
-mazepath(X,Y,Rs):-false.
-mazepath2(X,Y,Rs):-false.
 
+mazepath(X,Y,[]):- entry(X), next(X,Y).
+mazepath(X,Y,[X,Y]):- exit(Y), next(X,Y).
+mazepath(X,Y,[X|Xs]):- next(X,W), mazepath(W,Y,Xs).
+
+mazepath2(X,Y,Rs) :-
+  entry(X),
+  exit(Y),
+  traverse(X,Y,[X],Q),
+  reverse(Q,Rs).
+
+traverse(A,B,P,[B|P]) :- next(A,B).
+traverse(A,B,Acc,Rs) :-
+  next(A,C),
+  C \== B,
+  \+member(C,Acc),
+  traverse(C,B,[C|Acc],Rs).
 
 /*
 (Q4)
@@ -117,11 +140,13 @@ grocery::(Items:List[Int]) -> Bool
 */
 
 grocery(Vars):-
-	Vars=[A,B,C,D],
-        false,
-	label(Vars).
-
-
-
-
-
+	Prices = [A, B, C, D],
+  Prices ins 1..800,
+  A + B + C + D #= 711,
+  A * B * C * D #= 711000000,
+	label(Prices),
+  X is A / 100,
+  Y is B / 100,
+  Z is C / 100,
+  W is D / 100,
+  Vars = [X, Y, Z, W].
