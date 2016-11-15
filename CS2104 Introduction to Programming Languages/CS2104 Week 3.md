@@ -37,17 +37,6 @@ def addC(x:Int) (y:Int) = x + y // Curried
 
 > Curried functions are called that way because it was furthered by Haskell Curry.
 
-### List
-Common data structures in other languages. Empty lists return `Nil`.
-
-```Scala
-def append[A](xs: List[A],ys: List[A]): List[A] =
-    xs match {
-        case Nil => ys
-        case x::xs => x::append[A](xs, ys)
-    }
-```
-
 ## Functional Scala
 
 Advantages of the functional approach:
