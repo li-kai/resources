@@ -1,13 +1,12 @@
-object Keyword {
-  // permitted symbols 
-  def symbols:List[String] = List("=","+","-","*","/","~","(",")")
-  // reserved keywords in calculator 
-  def alphas:List[String] = List("let","in")
-  def specials:List[Char] = List('=','+','-','*','/','~','(',')')
-
-}
-
 package Lexical {
+  object Keyword {
+    // permitted symbols
+    def symbols:List[String] = List("=","+","-","*","/","~","(",")")
+    // reserved keywords in calculator
+    def alphas:List[String] = List("let","in")
+    def specials:List[Char] = List('=','+','-','*','/','~','(',')')
+
+  }
   // a lexical word
   sealed trait token
   case class Key(s: String) extends token
@@ -17,12 +16,12 @@ package Lexical {
   case class LexErr(s:String) extends Exception
   object test extends App {
     // printer for token
-    def string_of_token (t:token) : String = 
-      t match {
-        case Key(s) => "Key "+s
-        case Id(s) => "Id "+s
-        case Num(n:Int) => "NumI "+n
-      }
+    def string_of_token (t:token) : String =
+    t match {
+      case Key(s) => "Key "+s
+      case Id(s) => "Id "+s
+      case Num(n:Int) => "NumI "+n
+    }
 
     def explode (s:String):List[Char] = {
       def expl(i:Int,l:List[Char]):List[Char] =
@@ -31,7 +30,7 @@ package Lexical {
       expl(s.length-1,Nil)
     }
 
-    def implode (xs:List[Char]) : String = 
+    def implode (xs:List[Char]) : String =
       xs match {
         case Nil => ""
         case c::ts => c+implode(ts)
@@ -40,40 +39,37 @@ package Lexical {
     def is_letter_or_digit (s:Char) :Boolean = true
 
     def alphanum (cs:List[Char],id:List[Char]) : (String,List[Char]) =
-        cs match {
-          case c::cs2 => 
-            if (is_letter_or_digit(c)) 
-              alphanum(cs2,c::id)
-            else (implode(id.reverse),cs)
-          case Nil => (implode(id.reverse),Nil)
-        }
+      cs match {
+        case c::cs2 =>
+          if (is_letter_or_digit(c))
+            alphanum(cs2,c::id)
+          else (implode(id.reverse),cs)
+        case Nil => (implode(id.reverse),Nil)
+      }
     def is_mem[A](a:A,ls:List[A]) =
-          ls exists ((x) => x.equals(a))
+      ls exists ((x) => x.equals(a))
     def tokenof (a:String) : token =
-          if (is_mem(a,Keyword.alphas))
-            Key(a)
-          else Id(a)
+      if (is_mem(a,Keyword.alphas))
+        Key(a)
+      else Id(a)
     def symbolic (cs:List[Char],sy:String):(String,List[Char]) =
       cs match {
-        case c::cs2 => 
+        case c::cs2 =>
           if (is_mem(sy,Keyword.symbols)) (sy,cs)
           else if (!is_mem(c,Keyword.specials))
-                 throw new LexErr("Unrecognized lex symbol "+sy)
+            throw new LexErr("Unrecognized lex symbol "+sy)
           else symbolic(cs2,sy+c)
         case Nil => (sy,Nil)
       }
   }
 
-/*
-let tokenof (a:string) : token = 
-	if List.mem a Keyword.alphas 
-	then Key a 
-	else Id a;;
-*/
+  /*
+  let tokenof (a:string) : token =
+    if List.mem a Keyword.alphas
+    then Key a
+    else Id a;;
+  */
 }
-
-case class parseErr(smth:String)  extends Exception
-case class toBeImplemented(smth:String)  extends Exception
 
 package Parsing {
   import Lexical._
@@ -88,7 +84,7 @@ package Parsing {
 
   import scala.util.parsing.combinator._
   object P extends RegexParsers{
-    //val alphanum = 
+    //val alphanum =
     val dateP1 = """(\d\d\d\d)-(\d\d)-(\d\d)""".r
     val dateP1(yr, month, day) = "2011-07-15"
     val copyright: String = dateP1 findFirstIn "Date of this document: 2011-07-15" match {
@@ -98,21 +94,21 @@ package Parsing {
     def alphanum: Parser[String] = """[a-z][a-z0-9]*""".r
     def alphanum2: Parser[String] = """[a-zA-Z_][a-zA-Z0-9_]*""".r
 
-    def getYears(text: String): Iterator[String] = 
-      for (dateP1(year, _, _) <- dateP1 findAllIn text) 
-      yield year
+    def getYears(text: String): Iterator[String] =
+      for (dateP1(year, _, _) <- dateP1 findAllIn text)
+        yield year
 
     def numbD: Parser[Double] = """\d+(\.\d*)?""".r ^^ { _.toDouble }
     def numbI: Parser[Int] = """0|[1-9]\d*""".r ^^ { _.toInt }
     def word: Parser[String]    = """[a-z]+""".r ^^ { _.toString }
-    def main(args: Array[String]) = 
+    def main(args: Array[String]) =
       println(parse(word, "johnny come lately"))
     def main2(args: Array[String]) = {
-         parse(word, "johnny come lately") match {
-           case Success(matched,_) => println(matched)
-           case Failure(msg,_) => println("FAILURE: " + msg)
-           case Error(msg,_) => println("ERROR: " + msg)
-         }
+      parse(word, "johnny come lately") match {
+        case Success(matched,_) => println(matched)
+        case Failure(msg,_) => println("FAILURE: " + msg)
+        case Error(msg,_) => println("ERROR: " + msg)
+      }
     }
     val tmp = yr+5
     val plus = "+"
@@ -140,8 +136,8 @@ package Parsing {
     def number: Parser[Double] = """\d+(\.\d*)?""".r ^^ { _.toDouble }
     def factor: Parser[Double] = number | "(" ~> expr <~ ")"
     def term  : Parser[Double] = factor ~ ( "*" ~ factor | "/" ~ factor
-       ).* ^^ {
-        case number ~ list => (number /: list) {
+      ).* ^^ {
+      case number ~ list => (number /: list) {
         case (x, "*" ~ y) => x * y
         case (x, "/" ~ y) => x / y
       }
@@ -153,18 +149,23 @@ package Parsing {
       }
     }
 
-  def apply(input: String): Double = parseAll(expr, input) match {
-    case Success(result, _) => result
-    case failure : NoSuccess => scala.sys.error(failure.msg)
+    def apply(input: String): Double = parseAll(expr, input) match {
+      case Success(result, _) => result
+      case failure : NoSuccess => scala.sys.error(failure.msg)
+    }
+
   }
-}
+
+
+  case class ParseErr(smth:String)  extends Exception
+
   class Parsec[+A] {
     type Parser[A] = List[token] => (A,List[token])
     type tokens = List[token]
     def symbol(s:String):Parser[Unit] = {
       val exc = new ParseErr("Symbol "+s+" expected.")
       (toks:List[token]) => toks match {
-        case Key(b)::toks => 
+        case Key(b)::toks =>
           if (s.equals(b)) ((),toks)
           else throw exc
         case _ => throw exc
@@ -182,7 +183,7 @@ package Parsing {
       }
 
     def alt[A,B](ph1:Parser[A],ph2:Parser[B]) (toks:List[token]) = {
-      val tup1 = ph1 (toks) 
+      val tup1 = ph1 (toks)
       val tup2 = ph2 (tup1._2)
       ((tup1._1,tup2._1),tup2._2)
     }
@@ -190,27 +191,27 @@ package Parsing {
     def |[A](ph1:Parser[A],ph2:Parser[A]) (toks:List[token]) = {
       try {
         ph1(toks)
-        } 
-      catch { 
-        case e:ParseErr => 
+      }
+      catch {
+        case e:ParseErr =>
           ph2(toks)
       }
     }
-/*
- let (++) (ph1 : tokens->'a*tokens) 
-          (ph2 : tokens->'b*tokens) 
-          (toks:tokens) : ('a*'b)*tokens =
-     let (t1,toks1) = ph1 toks in
-     let (t2,toks2) = ph2 toks1 in
-     ((t1,t2),toks2)
+    /*
+     let (++) (ph1 : tokens->'a*tokens)
+              (ph2 : tokens->'b*tokens)
+              (toks:tokens) : ('a*'b)*tokens =
+         let (t1,toks1) = ph1 toks in
+         let (t2,toks2) = ph2 toks1 in
+         ((t1,t2),toks2)
 
-let (|%|) (ph1:tokens -> 'a*tokens) 
-         	(ph2:tokens -> 'a*tokens) 
-         	(toks:tokens) : 'a*tokens =
-     try
-       ph1 toks
-     with (ParseErr _) -> ph2 toks;; 
-*/
+    let (|%|) (ph1:tokens -> 'a*tokens)
+               (ph2:tokens -> 'a*tokens)
+               (toks:tokens) : 'a*tokens =
+         try
+           ph1 toks
+         with (ParseErr _) -> ph2 toks;;
+    */
     def ^^[A,B](ph:Parser[A],f:A=>B) (toks:List[token]) = {
       val tup = ph(toks)
       (f(tup._1),tup._2)
@@ -218,71 +219,72 @@ let (|%|) (ph1:tokens -> 'a*tokens)
 
 
     def repeat[A](ph:Parser[A]) (toks:List[token]) : (List[A],List[token]) =   {
-       |(^^(alt(ph,repeat[A](ph)(_)),
-             ((ab:(A,List[A])) => ab._1::ab._2)),
-         empty[A](_)) (toks)
+      |(^^(alt(ph,repeat[A](ph)(_)),
+        ((ab:(A,List[A])) => ab._1::ab._2)),
+        empty[A](_)) (toks)
     }
 
     def empty[A] (toks:List[token]) = (Nil:List[A],toks)
 
-    def ?[A](ph:Parser[A]) (toks:List[token]) : (Option[A],List[token]) =   
-       |(^^(ph,((a:A) => Some(a))),
-          ((t:List[token]) => (None,t))) (toks)
+    def ?[A](ph:Parser[A]) (toks:List[token]) : (Option[A],List[token]) =
+      |(^^(ph,((a:A) => Some(a))),
+        ((t:List[token]) => (None,t))) (toks)
 
 
-/*
+    /*
 
-*
-* https://wiki.scala-lang.org/display/SW/Parser+Combinators--Getting+Started
+    *
+    * https://wiki.scala-lang.org/display/SW/Parser+Combinators--Getting+Started
 
-https://kerflyn.wordpress.com/2012/08/25/playing-with-scala-parser-combinator/
+    https://kerflyn.wordpress.com/2012/08/25/playing-with-scala-parser-combinator/
 
-*/
+    */
   }
 
 
-/*
- // convert parser below to Scala..
+  /*
+   // convert parser below to Scala..
 
- let rec factor  = 
-    (numb >> (fun x-> ENum x))
-|%| (ident >> (fun s -> EId s))
-|%| (key_open ++ expr ++ key_close 
-	        >> (fun ((_,e),_) -> e))
-and term = 
-  ((factor ++ key_times) ++ term >> 
-	   (fun ((e1,_),e2) -> ETimes (e1,e2)))
-   |%| ((factor ++ key_div) ++ term >> 
-        (fun ((e1,_),e2) -> EDiv (e1,e2)))
-   |%| factor)
+   let rec factor  =
+      (numb >> (fun x-> ENum x))
+  |%| (ident >> (fun s -> EId s))
+  |%| (key_open ++ expr ++ key_close
+            >> (fun ((_,e),_) -> e))
+  and term =
+    ((factor ++ key_times) ++ term >>
+       (fun ((e1,_),e2) -> ETimes (e1,e2)))
+     |%| ((factor ++ key_div) ++ term >>
+          (fun ((e1,_),e2) -> EDiv (e1,e2)))
+     |%| factor)
 
-and expr tok = 
-  ((term ++ key_plus) ++ expr >> 
-    (fun ((e1,_),e2) -> EPlus (e1,e2)))
-  |%| ((term ++ key_minus) ++ expr >> 
-    (fun ((e1,_),e2) -> EMinus (e1,e2)))
-  |%| term )
+  and expr tok =
+    ((term ++ key_plus) ++ expr >>
+      (fun ((e1,_),e2) -> EPlus (e1,e2)))
+    |%| ((term ++ key_minus) ++ expr >>
+      (fun ((e1,_),e2) -> EMinus (e1,e2)))
+    |%| term )
 
-and term = 
-  ((term ++ key_times) ++ factor>> 
-	   (fun ((e1,_),e2) -> ETimes (e1,e2)))
-   |%| ((term ++ key_div) ++ factor >> 
-        (fun ((e1,_),e2) -> EDiv (e1,e2)))
-   |%| factor)
-   *
-  and term = 
-  ((factor ++ repeat 
-     ((key_times |%| key_div) ++ factor)) 
-   >> (fun (e1,lst) -> List.fold_left 
-    (fun e (op,e2) -> 
-      if op="*" then ETimes (e,e2) 
-      else EDiv(e,e2)) e1 lst))
+  and term =
+    ((term ++ key_times) ++ factor>>
+       (fun ((e1,_),e2) -> ETimes (e1,e2)))
+     |%| ((term ++ key_div) ++ factor >>
+          (fun ((e1,_),e2) -> EDiv (e1,e2)))
+     |%| factor)
+     *
+    and term =
+    ((factor ++ repeat
+       ((key_times |%| key_div) ++ factor))
+     >> (fun (e1,lst) -> List.fold_left
+      (fun e (op,e2) ->
+        if op="*" then ETimes (e,e2)
+        else EDiv(e,e2)) e1 lst))
 
-*/
+  */
 }
 
 // You may use the following abstract syntax tree from Tut7
 
+case class toBeImplemented(smth:String)  extends Exception
 
 object Lab4 extends App {
 
@@ -299,7 +301,7 @@ object Lab4 extends App {
   }
   case class Let(n: String,t1: Term, t2: Term) extends Term {
     override def toString = "(let "++n.toString ++ "=" ++ t1.toString++
-    " in "++t2.toString ++")"
+      " in "++t2.toString ++")"
   }
 
   def free_vars (t:Term) : List[String] =
@@ -311,15 +313,15 @@ object Lab4 extends App {
       }
       case FApp(t1,t2) => free_vars(t1) ++ free_vars(t2)
       case Let(v,t1,t2) => {
-         val vs = free_vars(t1)
-         (vs filterNot (x => (x==v))) ++ free_vars(t2)
+        val vs = free_vars(t1)
+        (vs filterNot (x => (x==v))) ++ free_vars(t2)
       }
     }
 
-  def parse_lambda(x:String):Option[Term] = 
+  def parse_lambda(x:String):Option[Term] =
     throw new toBeImplemented("parser for lambda term")
 
-  def eval_to_value(x:Term):Term = 
+  def eval_to_value(x:Term):Term =
     throw new toBeImplemented("evaluator for lambda term")
 
   import Parsing._

@@ -78,3 +78,6 @@ where B is the bandwidth
 - Facebook is contacted
     + Negotiate for secure connection
     + SSL/TLS connection if HTTPS
+
+## Baud Rate
+Number of signal units/s
