@@ -1,11 +1,11 @@
-# CS2105 Week 10
-## Haskell
+# Haskell
 Things that make Haskell special
 - Laziness
 - List Comprehension
 - Monads
 - Type Classes
-### Lazy Evaluation
+
+## Lazy Evaluation
 All data constructs and functions are lazy.
 #### Infinite data structures
 Using lazy evaluation alllows us to define infinite data sturctures.
@@ -15,5 +15,5 @@ They can be accessed in a finite way using functions.
 
 
 
-### Type Classes
+## Type Classes
 Advantage, equality between types are easy except for functions. Using type classes allows ability to do so.
