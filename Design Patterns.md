@@ -266,24 +266,16 @@ The Observer patterns encourage us to think hard about the relationships between
 
 Further motivation behind using the Observer pattern is where we need to maintain consistency between related objects without making classes tightly coupled. For example, when an object needs to be able to notify other objects without making assumptions regarding those objects.
 
-### Mediator Pattern
-The Module pattern encapsulates "privacy", state and organization using closures. It provides a way of wrapping a mix of public and private methods and variables, protecting pieces from leaking into the global scope and accidentally colliding with another developer's interface. With this pattern, only a public API is returned, keeping everything else within the closure private.
+### Command Pattern
+The Command pattern aims to encapsulate method invocation, requests or operations into a single object and gives us the ability to both parameterize and pass method calls around that can be executed at our discretion. In addition, it enables us to decouple objects invoking the action from the objects which implement them, giving us a greater degree of overall flexibility in swapping out concrete classes (objects).
+
+Concrete classes are best explained in terms of class-based programming languages and are related to the idea of abstract classes. An abstract class defines an interface, but doesn't necessarily provide implementations for all of its member functions. It acts as a base class from which others are derived. A derived class which implements the missing functionality is called a concrete class.
+
+The general idea behind the Command pattern is that it provides us a means to separate the responsibilities of issuing commands from anything executing commands, delegating this responsibility to different objects instead.
 
 ```js
-var testModule = (function () {
-
-  var counter = 0;
-
-  return {
-
-    incrementCounter: function () {
-      return counter++;
-    },
-
-    resetCounter: function () {
-      console.log( "counter value prior to reset: " + counter );
-      counter = 0;
-    }
-  };
-
-})();
+carManager.execute( "arrangeViewing", "Ferrari", "14523" );
+carManager.execute( "requestInfo", "Ford Mondeo", "54323" );
+carManager.execute( "requestInfo", "Ford Escort", "34232" );
+carManager.execute( "buyVehicle", "Ford Escort", "34232" );
+```
