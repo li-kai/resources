@@ -1,3 +1,5 @@
+# Declarative Scala
+
 ## Declarative Programming
 * Say what you want to compute and let computer find how to compute it
 * Function focused
