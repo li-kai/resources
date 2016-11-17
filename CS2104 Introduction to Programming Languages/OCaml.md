@@ -1,28 +1,8 @@
-# CS2104 Week 12
+# OCaml
+OCaml is a pretty old language, with powerful features.
 
-## Monads
-Joining simple component in robust ways by encapsulating values of a data type and outputing a new type. The computation follows a set of predicates called moand laws.
-
-### I/O Operations
-A pure value can be converted into an action by return, but not the converse.
-
-```Haskell
-x + print y -- Illegal
-```
-IO operations are Haskell values that can be passed to functions.
-
-We can construct a list of operations in a monad, then execute them in series by running them.
-
-```Haskell
-sequence_ :: [IO ()] -> IO ()
-sequence_ = foldr (>>) (return ())
-```
-
-Exceptions are also monads.
-
-## ocaml
 ### Mutable Reference
-```ocaml
+```OCaml
 let ptr = ref 10;; (* referencing *)
 
 let v:int = !ptr;; (* dereferencing *)
@@ -30,7 +10,8 @@ let v:int = !ptr;; (* dereferencing *)
 
 ### Records
 Records are immutable by default but can choose some fields mutable.
-```ocaml
+
+```OCaml
 type (`a, `b) pair = {
     mutable first: `a,
     second: `b
@@ -39,7 +20,7 @@ type (`a, `b) pair = {
 
 ### Class
 
-```ocaml
+```OCaml
 class counter =
     object
         val mutable x = 0
@@ -53,8 +34,9 @@ In order to access values in a class, you must write a getter.
 
 You can give an explicit nae for the current object, this is akin to `this` object in other languages.
 
-You can inherit in Ocaml.
-```ocaml
+You can inherit in OCaml.
+
+```OCaml
 class counter1 =
     object
         inherit [int] counter
@@ -63,7 +45,8 @@ class counter1 =
 ```
 
 You can make the class polymorphic
-```ocaml
+
+```OCaml
 class ['a] buffer init =
     object
         val mutable x :'a = init
@@ -73,13 +56,13 @@ class ['a] buffer init =
 ```
 
 #### Typing
-Classes in Ocaml are structurally equivalent if their types and visible methods are exactly the same, even if they do different things.
+Classes in OCaml are structurally equivalent if their types and visible methods are exactly the same, even if they do different things.
 
 Therefore, you can pass an object of a class to another class.
 
 If B has more visible type methods than A, then B is a subtype of A. That means you can pass class B objects as class A objects. This is called structural subtyping via "row polymorphism".
 
-```ocaml
+```OCaml
 let foo3 (v) = (v:>`b buffer) # get;;
 (* foo3: `b #buffer -> `b *)
 ```
@@ -89,7 +72,8 @@ You can shallow clone an object using `Oo.copy` which works with any object type
 
 #### Functional Objects
 As long as there are no mutations of fields, the objects are immutable and functional.
-```ocaml
+
+```OCaml
 class functional_int y =
     object
         val x = y
@@ -98,10 +82,10 @@ class functional_int y =
     end;;
 ```
 
-#### Virtual Classes and Methods
+### Virtual Classes and Methods
 Virtual classes have undefined methods, and cannot be instantiated. This is equivalent to abstract class and abstract methods in Scala/Java.
 
-#### Module
+### Module
 Modules can be used to group types, values, functions, classes, exceptions and even other modules.
 
 You can use qualified names or open a module with `open` keyword to access entities locally.
