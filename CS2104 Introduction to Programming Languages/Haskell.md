@@ -117,7 +117,9 @@ fibs n = a where a = array (0,n) [(0,1),(1,1)]++
 ```
 
 ### Monads
-Joining simple component in robust ways by encapsulating values of a data type and outputing a new type. The computation follows a set of predicates called moand laws.
+Joining simple component in robust ways by encapsulating values of a data type and outputing a new type. The computation follows a set of predicates called monad laws.
+
+Explaining monads is [hard](http://stackoverflow.com/questions/44965/what-is-a-monad). [This](http://www.matusiak.eu/numerodix/blog/2012/3/11/monads-for-the-layman/) is the best explanation I could find.
 
 #### I/O Operations
 A pure value can be converted into an action by return, but not the converse.
