@@ -22,7 +22,7 @@ When creating a datagram, sender must specify dest. IP address and port #. |
  | Directs UDP segment to the socket with that port #.
  | IP datagrams (from different sources) with the same destination port # will be directed to the same UDP socket at destination.
 
- ### UDP Header
+### UDP Header
 32 bits
 16 bits: source port #, dest port #, length, checksum
 
