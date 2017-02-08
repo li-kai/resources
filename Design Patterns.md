@@ -279,3 +279,83 @@ carManager.execute( "requestInfo", "Ford Mondeo", "54323" );
 carManager.execute( "requestInfo", "Ford Escort", "34232" );
 carManager.execute( "buyVehicle", "Ford Escort", "34232" );
 ```
+
+### Facade Pattern
+When we put up a facade, we present an outward appearance to the world which may conceal a very different reality. This was the inspiration for the name behind the next pattern we're going to review - the Facade pattern. This pattern provides a convenient higher-level interface to a larger body of code, hiding its true underlying complexity. Think of it as simplifying the API being presented to other developers, something which almost always improves usability.
+
+Facades are a structural pattern which can often be seen in JavaScript libraries like jQuery where, although an implementation may support methods with a wide range of behaviors, only a "facade" or limited abstraction of these methods is presented to the public for use.
+
+### Factory Pattern
+The Factory pattern is another creational pattern concerned with the notion of creating objects. Where it differs from the other patterns in its category is that it doesn't explicitly require us use a constructor. Instead, a Factory can provide a generic interface for creating objects, where we can specify the type of factory object we wish to be created.
+
+```js
+// Types.js - Constructors used behind the scenes
+
+// A constructor for defining new cars
+function Car( options ) {
+
+  // some defaults
+  this.doors = options.doors || 4;
+  this.state = options.state || "brand new";
+  this.color = options.color || "silver";
+
+}
+
+// A constructor for defining new trucks
+function Truck( options){
+
+  this.state = options.state || "used";
+  this.wheelSize = options.wheelSize || "large";
+  this.color = options.color || "blue";
+}
+
+
+// FactoryExample.js
+
+// Define a skeleton vehicle factory
+function VehicleFactory() {}
+
+// Define the prototypes and utilities for this factory
+
+// Our default vehicleClass is Car
+VehicleFactory.prototype.vehicleClass = Car;
+
+// Our Factory method for creating new Vehicle instances
+VehicleFactory.prototype.createVehicle = function ( options ) {
+
+  switch(options.vehicleType){
+    case "car":
+      this.vehicleClass = Car;
+      break;
+    case "truck":
+      this.vehicleClass = Truck;
+      break;
+    //defaults to VehicleFactory.prototype.vehicleClass (Car)
+  }
+
+  return new this.vehicleClass( options );
+
+};
+
+// Create an instance of our factory that makes cars
+var carFactory = new VehicleFactory();
+var car = carFactory.createVehicle( {
+            vehicleType: "car",
+            color: "yellow",
+            doors: 6 } );
+
+// Test to confirm our car was created using the vehicleClass/prototype Car
+
+// Outputs: true
+console.log( car instanceof Car );
+
+// Outputs: Car object of color "yellow", doors: 6 in a "brand new" state
+console.log( car );
+```
+
+The Factory pattern can be especially useful when applied to the following situations:
+
+- When our object or component setup involves a high level of complexity
+- When we need to easily generate different instances of objects depending on the environment we are in
+- When we're working with many small objects or components that share the same properties
+- When composing objects with instances of other objects that need only satisfy an API contract (aka, duck typing) to work. This is useful for decoupling.
