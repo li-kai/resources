@@ -118,7 +118,7 @@ Implementing is not easy due to need of timer.
 In linked-list implementation, contain a reference bit for each page. When it is referenced before, give it 1. When the OS wants to kill it, set it to 0 to give it a "second chance". When OS sees a reference bit 0, kill it off.
 
 Time | Memory Reference | Frame | Loaded at time | Reference Bit | Oldest Page | Fault
-- | - | - | - | -
+- | - | - | - | - | - | -
 1 | 2 | 2 | 1 | 0 | 2 | Y
 2 | 3 | 2 3 | 1 2 | 0 0 | 2 | Y
 3 | 2 | 2 3 | 1 2 | 1 0 | 2 | N
